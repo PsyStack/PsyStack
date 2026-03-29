@@ -5,10 +5,11 @@ from __future__ import annotations
 import queue as _queue_mod
 import threading
 from pathlib import Path
+from typing import TYPE_CHECKING
 
 from textual.app import App, ComposeResult
 from textual.binding import Binding
-from textual.widgets import Footer
+from textual.widgets import Footer, Static
 
 from psystack.pipeline.live_update import LivePairFrame
 from psystack.pipeline.paired_runner import EvalCancelled as _EvalCancelled
@@ -23,8 +24,11 @@ from psystack.tui.detection import (
 from psystack.tui.services import TuiBackendService
 from psystack.tui.state import AppState, CaseState, RuntimeStatus, ScreenMode
 
+if TYPE_CHECKING:
+    from psystack.tui.screens.run_builder import RunBuilderScreen
 
-def _fallback_pair_view(frame: LivePairFrame) -> "LivePairTelemetryView":  # noqa: F821
+
+def _fallback_pair_view(frame: LivePairFrame) -> "LivePairTelemetryView":  # type: ignore[name-defined]  # noqa: F821
     """Minimal pair view when no adapter is available."""
     from psystack.core.signal_schema import LivePairTelemetryView
 
@@ -146,19 +150,19 @@ class PsyStackApp(App):
         # Set during shutdown to prevent call_from_thread crashes
         self._shutting_down: bool = False
 
-    def _safe_call(self, callback: object, *args: object) -> None:
+    def _safe_call(self, callback: object, *args: object, **kwargs: object) -> None:
         """call_from_thread that silently no-ops if the app is shutting down."""
         if self._shutting_down:
             return
         try:
-            self.call_from_thread(callback, *args)  # type: ignore[arg-type]
+            self.call_from_thread(callback, *args, **kwargs)  # type: ignore[arg-type]
         except Exception:
             pass  # App message loop already closed
 
     def compose(self) -> ComposeResult:
         yield Footer()
 
-    def action_quit(self) -> None:
+    def action_quit(self) -> None:  # type: ignore[override]
         """Cancel running eval worker before exit to avoid SIGSEGV in torch/numpy."""
         self._shutting_down = True
         self._eval_cancel.set()
@@ -170,7 +174,7 @@ class PsyStackApp(App):
         else:
             self.exit()
 
-    def action_pop_screen(self) -> None:
+    def action_pop_screen(self) -> None:  # type: ignore[override]
         """Guard against popping back to the bare base screen."""
         if len(self.screen_stack) > 2:
             self.pop_screen()
@@ -181,8 +185,11 @@ class PsyStackApp(App):
         # Detect context from cwd
         ctx = detect_context(Path.cwd(), explicit_workspace=self._explicit_workspace)
         self.state.detected_context = ctx
-        # Always start on the Run Builder — previous cases are accessible from history
-        self._open_run_builder()
+        # If an explicit workspace was passed, load it directly; otherwise open Run Builder
+        if ctx.case:
+            self.load_workspace(ctx.case)
+        else:
+            self._open_run_builder()
 
     # ── Workspace loading ──
 
@@ -467,7 +474,7 @@ class PsyStackApp(App):
         else:
             from psystack.tui.screens.investigation import InvestigationScreen
             if isinstance(screen, InvestigationScreen):
-                screen.query_one("#inv-status-line").update("running…")
+                screen.query_one("#inv-status-line", Static).update("running…")
 
     def _notify_screen_progress(self, side: str, episode: int, total: int) -> None:
         screen = self.screen
@@ -485,7 +492,7 @@ class PsyStackApp(App):
         else:
             from psystack.tui.screens.investigation import InvestigationScreen
             if isinstance(screen, InvestigationScreen):
-                screen.query_one("#inv-status-line").update("computing outcomes…")
+                screen.query_one("#inv-status-line", Static).update("computing outcomes…")
 
     def _notify_screen_failed(self, error: str) -> None:
         screen = self.screen
@@ -798,7 +805,7 @@ class PsyStackApp(App):
         """Clean up live monitoring resources."""
         timer = self._live_poll_timer
         if timer is not None:
-            timer.stop()  # type: ignore[union-attr]
+            timer.stop()  # type: ignore[attr-defined]
         self._live_poll_timer = None
         self._live_queue = None
         self._live_sidecar = None
@@ -1111,21 +1118,19 @@ class PsyStackApp(App):
 
     # ── RunBuilderScreen messages ──
 
-    def on_run_builder_screen_case_selected(self, event: object) -> None:
-        msg = event  # type: ignore[assignment]
+    def on_run_builder_screen_case_selected(self, event: RunBuilderScreen.CaseSelected) -> None:
         self.pop_screen()
-        self.load_workspace(msg.workspace)
+        self.load_workspace(event.workspace)
 
-    def on_run_builder_screen_case_edited(self, event: object) -> None:
+    def on_run_builder_screen_case_edited(self, event: RunBuilderScreen.CaseEdited) -> None:
         """Handle edited case: save case.json, check staleness, update UI (WORK-01 thru WORK-04)."""
         from psystack.pipeline.case_io import save_case
         from psystack.pipeline.staleness import is_result_stale
         from psystack.tui.screens.case_verdict import CaseVerdictScreen
         from psystack.tui.screens.investigation import InvestigationScreen
 
-        msg = event  # type: ignore[assignment]
-        case = msg.case
-        workspace = msg.workspace
+        case = event.case
+        workspace = event.workspace
 
         # Save updated case.json only -- never delete analysis/ or runs/ (WORK-04)
         save_case(case, workspace)
@@ -1140,7 +1145,7 @@ class PsyStackApp(App):
             stale = is_result_stale(case, result)
             if isinstance(self.screen, InvestigationScreen):
                 self.screen._stale = stale
-                self.screen._render_status_line()
+                self.screen._render_focus_line()
                 if stale:
                     self.notify("Case updated. Results are stale — re-evaluate or rerun analysis.")
             elif isinstance(self.screen, CaseVerdictScreen):
@@ -1155,10 +1160,9 @@ class PsyStackApp(App):
         else:
             self.notify("Case updated.")
 
-    def on_run_builder_screen_case_created(self, event: object) -> None:
-        msg = event  # type: ignore[assignment]
-        case = msg.case
-        workspace = msg.workspace
+    def on_run_builder_screen_case_created(self, event: RunBuilderScreen.CaseCreated) -> None:
+        case = event.case
+        workspace = event.workspace
         ctx = self.state.detected_context
 
         # Create workspace with new directory structure (D-01, D-02)
@@ -1177,6 +1181,11 @@ class PsyStackApp(App):
         self.state.case_name = workspace.name
         self.state.case_state = CaseState.DRAFT
         self.state.events = []
+        self.state.outcomes = None
+
+        # Update in-memory case list so history sees it immediately
+        if workspace not in ctx.cases:
+            ctx.cases.insert(0, workspace)
 
         # Navigate to case verdict
         self.pop_screen()
