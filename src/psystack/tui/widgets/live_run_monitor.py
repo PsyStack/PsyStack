@@ -94,7 +94,7 @@ LiveRunMonitor #lrm-compare {
 
     def __init__(self, *args, track_geometry: list[tuple[float, float]] | None = None, **kwargs) -> None:
         super().__init__(*args, **kwargs)
-        self._raster: "BrailleTrackRaster | None" = None
+        self._raster: BrailleTrackRaster | None = None
         if track_geometry:
             from psystack.tui.widgets.track_map import BrailleTrackRaster
             self._raster = BrailleTrackRaster(track_geometry)
@@ -251,7 +251,7 @@ LiveRunMonitor #lrm-compare {
         idx = len(self._completed) - 1
         history.mount(Static(line, classes="lrm-ep-done", id=f"lrm-done-{idx}"))
 
-    def push_update(self, view: "LivePairTelemetryView") -> None:
+    def push_update(self, view: LivePairTelemetryView) -> None:
         """Render pair telemetry view into A/B columns with step log."""
         if self._frozen:
             return

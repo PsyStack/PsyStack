@@ -1,6 +1,7 @@
 """Unit tests for pipeline.compare_module — pure comparison logic."""
 
 import pytest
+
 from psystack.models.episode import EpisodeOutcome, EpisodeRecord
 from psystack.pipeline.compare_module import (
     CompareResult,

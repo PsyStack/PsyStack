@@ -25,7 +25,6 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-
 # -- Error Categories (D-07) --
 # These document the 5 error categories from D-07. Used as the error_category
 # argument to save_failed_attempt(). Callers should use these constants rather

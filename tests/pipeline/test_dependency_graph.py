@@ -10,7 +10,6 @@ from psystack.models.run import Run
 from psystack.pipeline.context import RunContext
 from psystack.pipeline.runner import run_stages
 from psystack.pipeline.state import StageResult, StageState
-
 from tests.conftest import DummyAdapterFactory
 
 

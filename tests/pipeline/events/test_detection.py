@@ -13,7 +13,6 @@ from psystack.pipeline.events.divergence import (
     find_persistent_onset,
 )
 
-
 # ── Helpers ──────────────────────────────────────────────────────────────
 
 def _make_step(

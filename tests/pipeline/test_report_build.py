@@ -7,7 +7,6 @@ from pathlib import Path
 
 from psystack.models import RunManifest
 from psystack.models.case import Case
-from psystack.models.run import Run
 from psystack.models.comparison import ComparisonReport, MetricComparison
 from psystack.models.isolation import (
     AttributionTable,
@@ -15,6 +14,7 @@ from psystack.models.isolation import (
     IsolationCase,
     IsolationResultBundle,
 )
+from psystack.models.run import Run
 from psystack.models.swap import SwapFactors
 from psystack.reporting.bundle import build_report_bundle
 

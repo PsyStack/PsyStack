@@ -10,14 +10,12 @@ from textual.app import App, ComposeResult
 from textual.binding import Binding
 from textual.widgets import Footer
 
-from psystack.pipeline.live_update import LivePairFrame, LiveStepUpdate
+from psystack.pipeline.live_update import LivePairFrame
 from psystack.pipeline.paired_runner import EvalCancelled as _EvalCancelled
-
 from psystack.pipeline.state import StageResult
-from psystack.pipeline.workspace import update_case_state, save_failed_attempt, ERR_ANALYSIS
+from psystack.pipeline.workspace import ERR_ANALYSIS, save_failed_attempt, update_case_state
 from psystack.tui.actions import PsyStackActions
 from psystack.tui.detection import (
-    DetectedContext,
     detect_context,
     load_recent_cases,
     save_recent_case,
@@ -26,7 +24,7 @@ from psystack.tui.services import TuiBackendService
 from psystack.tui.state import AppState, CaseState, RuntimeStatus, ScreenMode
 
 
-def _fallback_pair_view(frame: LivePairFrame) -> "LivePairTelemetryView":
+def _fallback_pair_view(frame: LivePairFrame) -> "LivePairTelemetryView":  # noqa: F821
     """Minimal pair view when no adapter is available."""
     from psystack.core.signal_schema import LivePairTelemetryView
 
@@ -707,7 +705,8 @@ class PsyStackApp(App):
         self.state.runtime.error = error_msg
         if self.state.current_workspace:
             update_case_state(self.state.current_workspace, "analysis_partial")
-        self.notify(f"Outcome computation failed: {error_msg}. Run data preserved — press r to retry.", severity="warning")
+        msg = f"Outcome computation failed: {error_msg}. Run data preserved — press r to retry."
+        self.notify(msg, severity="warning")
         from psystack.tui.screens.case_verdict import CaseVerdictScreen
         from psystack.tui.screens.investigation import InvestigationScreen
         if isinstance(self.screen, CaseVerdictScreen):
@@ -775,7 +774,6 @@ class PsyStackApp(App):
 
     def _push_live_update(self, raw: object) -> None:
         """Transform LivePairFrame via adapter, forward to active screen."""
-        from psystack.core.signal_schema import LivePairTelemetryView
 
         if not isinstance(raw, LivePairFrame):
             return
@@ -1122,8 +1120,8 @@ class PsyStackApp(App):
         """Handle edited case: save case.json, check staleness, update UI (WORK-01 thru WORK-04)."""
         from psystack.pipeline.case_io import save_case
         from psystack.pipeline.staleness import is_result_stale
-        from psystack.tui.screens.investigation import InvestigationScreen
         from psystack.tui.screens.case_verdict import CaseVerdictScreen
+        from psystack.tui.screens.investigation import InvestigationScreen
 
         msg = event  # type: ignore[assignment]
         case = msg.case

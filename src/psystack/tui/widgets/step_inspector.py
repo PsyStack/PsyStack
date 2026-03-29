@@ -38,7 +38,7 @@ class StepInspector(Vertical):
         self.border_title = "Step Inspector"
         yield Static("Select a step to inspect", id="si-content", classes="si-content")
 
-    def set_schema(self, schema: "SignalSchema | None") -> None:
+    def set_schema(self, schema: SignalSchema | None) -> None:
         self._schema = schema
 
     def update_step(

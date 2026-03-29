@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Any, TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 from rich.text import Text
 from textual.app import ComposeResult
@@ -13,7 +13,6 @@ if TYPE_CHECKING:
     from psystack.core.signal_schema import SignalSchema
 
 from psystack.models.event import Event
-
 
 # ── Pure helper functions (testable independently) ──
 
@@ -79,7 +78,7 @@ class ProgressSummary(Vertical):
 
     def __init__(self, track_geometry: list[tuple[float, float]] | None = None, **kwargs: Any) -> None:
         super().__init__(**kwargs)
-        self._raster: "BrailleTrackRaster | None" = None
+        self._raster: BrailleTrackRaster | None = None
         if track_geometry:
             from psystack.tui.widgets.track_map import BrailleTrackRaster
             self._raster = BrailleTrackRaster(track_geometry)
@@ -97,7 +96,7 @@ class ProgressSummary(Vertical):
         self.border_title = "Track Progress"
         yield Static("No episode data \u2014 run evaluation to begin", id="ps-content", classes="ps-content")
 
-    def set_schema(self, schema: "SignalSchema | None", translator: Any = None) -> None:
+    def set_schema(self, schema: SignalSchema | None, translator: Any = None) -> None:
         self._schema = schema
         self._translator = translator
         self._progress_key = "lap_progress"
@@ -243,15 +242,15 @@ class ProgressSummary(Vertical):
         sa: dict[str, float] | None,
         sb: dict[str, float] | None,
     ) -> Any:
-        from rich.table import Table
         from rich.console import Group
+        from rich.table import Table
         
         window_half = 5
         lo = max(0, step - window_half)
         hi = min(self._max_step, step + window_half)
 
         header = Text()
-        header.append(f"  Segment ", style="dim bold")
+        header.append("  Segment ", style="dim bold")
         header.append(f"step {step}", style="bold")
         header.append(f"  window {lo}\u2013{hi}", style="dim")
 

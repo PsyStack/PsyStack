@@ -13,7 +13,7 @@ from textual.binding import Binding
 from textual.containers import Horizontal, Vertical
 from textual.message import Message
 from textual.screen import ModalScreen, Screen
-from textual.widgets import Button, Collapsible, Input, Rule, Select, Static
+from textual.widgets import Button, Input, Rule, Select, Static
 
 from psystack.models.case import Case
 from psystack.models.run import Run

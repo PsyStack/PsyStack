@@ -4,7 +4,6 @@ from __future__ import annotations
 
 from rich.text import Text
 
-
 # Braille dot positions: (col_offset, row_offset) -> bit index
 # Unicode braille: U+2800 + bitmask
 # Dot layout per cell (2 cols x 4 rows):

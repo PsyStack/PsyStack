@@ -16,7 +16,6 @@ from psystack.models.project import DiscoveredAssets, Project
 from psystack.models.run import Run
 from psystack.models.signal import SignalValue
 
-
 # ── SignalValue ──────────────────────────────────────────────────────────
 
 class TestSignalValue:

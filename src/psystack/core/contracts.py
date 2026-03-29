@@ -59,7 +59,7 @@ class SignalTranslator(Protocol):
     ) -> dict[str, float]: ...
 
     # Optional (checked via hasattr at call sites)
-    def signal_schema(self) -> "SignalSchema": ...
+    def signal_schema(self) -> "SignalSchema": ...  # noqa: F821
 
     def analyze_segment(
         self,

@@ -39,8 +39,9 @@ async def test_draft_workspace_opens_case_verdict_idle(patched_empty_app):
 
 async def test_verdict_block_shows_regression(patched_app):
     """Verdict block should contain regression text when outcomes show regression."""
-    from psystack.tui.screens.case_verdict import CaseVerdictScreen
     from textual.widgets import Static
+
+    from psystack.tui.screens.case_verdict import CaseVerdictScreen
 
     async with patched_app.run_test(size=(120, 40)) as pilot:
         await pilot.pause()
@@ -54,8 +55,9 @@ async def test_verdict_block_shows_regression(patched_app):
 
 async def test_episode_table_has_rows(patched_app):
     """Episode table should be populated with 2 rows matching episode_count."""
-    from psystack.tui.screens.case_verdict import CaseVerdictScreen
     from textual.widgets import DataTable
+
+    from psystack.tui.screens.case_verdict import CaseVerdictScreen
 
     async with patched_app.run_test(size=(120, 40)) as pilot:
         await pilot.pause()
@@ -170,8 +172,9 @@ async def test_help_notification(patched_app):
 
 async def test_draft_shows_idle_verdict(patched_empty_app):
     """Draft workspace verdict block shows no-results message."""
-    from psystack.tui.screens.case_verdict import CaseVerdictScreen
     from textual.widgets import Static
+
+    from psystack.tui.screens.case_verdict import CaseVerdictScreen
 
     async with patched_empty_app.run_test(size=(120, 40)) as pilot:
         await pilot.pause()

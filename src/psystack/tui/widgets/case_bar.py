@@ -46,7 +46,7 @@ class CaseBar(Static):
         case: Case,
         episode_idx: int,
         episode_count: int,
-        outcomes: "OutcomeSummary | None" = None,
+        outcomes: OutcomeSummary | None = None,
         stale: bool = False,
     ) -> None:
         """Render investigation-specific header: case + episode + verdict + align."""

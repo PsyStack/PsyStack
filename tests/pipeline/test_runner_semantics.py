@@ -2,14 +2,11 @@
 
 from __future__ import annotations
 
-from typing import Any
-
 import pytest
 
-from psystack.pipeline.runner import run_stages, StageObserver
-from psystack.pipeline.state import StageResult
 from psystack.pipeline.context import RunContext
-
+from psystack.pipeline.runner import run_stages
+from psystack.pipeline.state import StageResult
 
 # ── Protocol-satisfying stubs (no mocks) ─────────────────────────────
 
@@ -68,6 +65,7 @@ class DummyStage:
 def _make_ctx(tmp_path, monkeypatch) -> RunContext:
     """Build minimal RunContext from temp workspace."""
     import tomli_w
+
     from psystack.models.case import Case
     from psystack.models.run import Run
 

@@ -5,8 +5,8 @@ from __future__ import annotations
 import pytest
 
 from psystack.models.case import Case
-from psystack.models.run import Run
 from psystack.models.evaluation_result import ConfigSnapshot, EvaluationResult
+from psystack.models.run import Run
 from psystack.pipeline.staleness import is_result_stale
 
 

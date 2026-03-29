@@ -182,7 +182,7 @@ class CaseVerdictScreen(Screen):
         self,
         case: Case | None = None,
         case_state: CaseState = CaseState.DRAFT,
-        outcomes: "OutcomeSummary | None" = None,
+        outcomes: OutcomeSummary | None = None,
         episode_count: int = 0,
         events_by_episode: dict[str, list[Event]] | None = None,
         stale: bool = False,
@@ -287,7 +287,9 @@ class CaseVerdictScreen(Screen):
         self._screen_mode = "failed"
         self._refresh()
 
-    def set_ready(self, outcomes: "OutcomeSummary", episode_count: int, events_by_episode: dict[str, list[Event]]) -> None:
+    def set_ready(
+        self, outcomes: OutcomeSummary, episode_count: int, events_by_episode: dict[str, list[Event]]
+    ) -> None:
         self._case_state = CaseState.READY
         self._outcomes = outcomes
         self._episode_count = episode_count
@@ -296,7 +298,7 @@ class CaseVerdictScreen(Screen):
         self._screen_mode = "ready"
         self._refresh()
 
-    def set_stale(self, outcomes: "OutcomeSummary") -> None:
+    def set_stale(self, outcomes: OutcomeSummary) -> None:
         self._outcomes = outcomes
         self._stale = True
         self._screen_mode = "stale"

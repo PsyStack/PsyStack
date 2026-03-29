@@ -6,8 +6,8 @@ import pytest
 from textual.app import App, ComposeResult
 
 from psystack.models.event import Event
-from psystack.tui.widgets.transport_bar import TransportBar
 from psystack.tui.widgets.event_navigator import EventNavigator
+from psystack.tui.widgets.transport_bar import TransportBar
 from psystack.tui.widgets.verdict_strip import VerdictStrip
 
 pytestmark = [pytest.mark.asyncio, pytest.mark.tui]
@@ -23,7 +23,7 @@ class TransportApp(App):
 
 async def test_transport_step_forward():
     app = TransportApp()
-    async with app.run_test() as pilot:
+    async with app.run_test() as _pilot:
         bar = app.query_one(TransportBar)
         bar.max_step = 100
         bar.current_step = 50
@@ -33,7 +33,7 @@ async def test_transport_step_forward():
 
 async def test_transport_step_backward():
     app = TransportApp()
-    async with app.run_test() as pilot:
+    async with app.run_test() as _pilot:
         bar = app.query_one(TransportBar)
         bar.max_step = 100
         bar.current_step = 50
@@ -43,7 +43,7 @@ async def test_transport_step_backward():
 
 async def test_transport_step_clamp_lower():
     app = TransportApp()
-    async with app.run_test() as pilot:
+    async with app.run_test() as _pilot:
         bar = app.query_one(TransportBar)
         bar.max_step = 100
         bar.current_step = 2
@@ -53,7 +53,7 @@ async def test_transport_step_clamp_lower():
 
 async def test_transport_step_clamp_upper():
     app = TransportApp()
-    async with app.run_test() as pilot:
+    async with app.run_test() as _pilot:
         bar = app.query_one(TransportBar)
         bar.max_step = 100
         bar.current_step = 98
@@ -63,7 +63,7 @@ async def test_transport_step_clamp_upper():
 
 async def test_transport_goto_step():
     app = TransportApp()
-    async with app.run_test() as pilot:
+    async with app.run_test() as _pilot:
         bar = app.query_one(TransportBar)
         bar.max_step = 50
         bar.goto_step(25)
@@ -132,7 +132,7 @@ class VerdictApp(App):
 
 async def test_verdict_strip_awaiting():
     app = VerdictApp()
-    async with app.run_test() as pilot:
+    async with app.run_test() as _pilot:
         strip = app.query_one(VerdictStrip)
         strip.set_awaiting()
         assert "vs-awaiting" in strip.classes
@@ -140,7 +140,7 @@ async def test_verdict_strip_awaiting():
 
 async def test_verdict_strip_running():
     app = VerdictApp()
-    async with app.run_test() as pilot:
+    async with app.run_test() as _pilot:
         strip = app.query_one(VerdictStrip)
         strip.set_running()
         assert "vs-running" in strip.classes
@@ -166,7 +166,7 @@ async def test_verdict_strip_verdict():
     )
 
     app = VerdictApp()
-    async with app.run_test() as pilot:
+    async with app.run_test() as _pilot:
         strip = app.query_one(VerdictStrip)
         strip.set_verdict(outcomes)
         assert "vs-verdict-regression" in strip.classes
@@ -175,7 +175,7 @@ async def test_verdict_strip_verdict():
 async def test_verdict_strip_state_cycle():
     """Verify classes change as the strip cycles through states."""
     app = VerdictApp()
-    async with app.run_test() as pilot:
+    async with app.run_test() as _pilot:
         strip = app.query_one(VerdictStrip)
 
         strip.set_awaiting()

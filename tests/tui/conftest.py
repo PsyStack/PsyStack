@@ -8,7 +8,6 @@ import pytest
 
 from psystack.tui.detection import DetectedContext
 
-
 # ── Example workspace fixtures ──
 
 def _project_root() -> Path:
@@ -41,8 +40,8 @@ def empty_workspace() -> Path:
 @pytest.fixture()
 def patched_app(example_workspace: Path, monkeypatch: pytest.MonkeyPatch):
     """PsyStackApp pointed at the F1 workspace with adapter loading stubbed."""
-    from tests.conftest import DummyAdapterFactory
     from psystack.tui.app import PsyStackApp
+    from tests.conftest import DummyAdapterFactory
 
     factory = DummyAdapterFactory()
 
@@ -69,8 +68,8 @@ def patched_app(example_workspace: Path, monkeypatch: pytest.MonkeyPatch):
 @pytest.fixture()
 def patched_empty_app(empty_workspace: Path, monkeypatch: pytest.MonkeyPatch):
     """PsyStackApp pointed at the draft F1 workspace."""
-    from tests.conftest import DummyAdapterFactory
     from psystack.tui.app import PsyStackApp
+    from tests.conftest import DummyAdapterFactory
 
     factory = DummyAdapterFactory()
 

@@ -2,20 +2,18 @@
 
 from __future__ import annotations
 
-import math
-
-from psystack.tui.widgets.progress_summary import (
-    _event_progress,
-    _progress_to_col,
-)
 from psystack.adapters.f1.signals import (
     _segment_curvature_bucket,
     _segment_turn_direction,
     _unwrap_heading_window,
 )
+from psystack.tui.widgets.progress_summary import (
+    _event_progress,
+    _progress_to_col,
+)
 
 
-def _make_event(step: int, severity: str = "warning") -> "Event":
+def _make_event(step: int, severity: str = "warning") -> "Event":  # noqa: F821
     """Create a minimal Event for testing."""
     from psystack.models.event import Event
 

@@ -2,14 +2,13 @@
 
 from __future__ import annotations
 
-from typing import Any, TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
     from psystack.core.signal_schema import LivePairTelemetryView, SignalSchema
     from psystack.pipeline.live_update import LivePairFrame
 
 import math
-
 
 SIGNAL_GROUPS: dict[str, list[str]] = {
     "Core": ["steering", "throttle", "brake", "speed", "heading"],
@@ -153,7 +152,7 @@ class F1SignalTranslator:
             "speed_delta": speed_delta,
         }
 
-    def signal_schema(self) -> "SignalSchema":
+    def signal_schema(self) -> SignalSchema:
         """Return structured signal schema with thresholds."""
         from psystack.core.signal_schema import SignalDef, SignalSchema
 
@@ -308,7 +307,7 @@ class F1SignalTranslator:
 
         return rows
 
-    def format_live_pair(self, frame: "LivePairFrame") -> "LivePairTelemetryView":
+    def format_live_pair(self, frame: LivePairFrame) -> LivePairTelemetryView:
         """Format a LivePairFrame into adapter-specific telemetry view (4C)."""
         from psystack.core.signal_schema import LivePairTelemetryView
 

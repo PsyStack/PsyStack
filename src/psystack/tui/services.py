@@ -31,27 +31,23 @@ from psystack.cli.wizard.discovery import (
     load_factory,
 )
 from psystack.models.comparison import ComparisonReport
-from psystack.models.evaluation_result import EvaluationResult, ConfigSnapshot
 from psystack.models.episode import (
-    EpisodeOutcome,
-    EpisodeRecord,
     METRIC_DISPLAY_NAMES,
     OutcomeSummary,
 )
-from psystack.pipeline.compare_module import compare_results, build_episode_outcome, CompareResult
-from psystack.pipeline.workspace import (
-    create_workspace_dirs,
-    load_result,
-    read_workspace_state,
-    save_episodes,
-    save_failed_attempt,
-    update_case_state,
-    write_workspace_state,
-)
+from psystack.models.evaluation_result import ConfigSnapshot, EvaluationResult
 from psystack.models.isolation import AttributionTable, EffectEstimate, IsolationResultBundle
+from psystack.pipeline.compare_module import CompareResult, build_episode_outcome, compare_results
 from psystack.pipeline.context import RunContext
 from psystack.pipeline.runner import StageObserver, run_stages
 from psystack.pipeline.stages import DEFAULT_PIPELINE
+from psystack.pipeline.workspace import (
+    create_workspace_dirs,
+    read_workspace_state,
+    save_episodes,
+    update_case_state,
+    write_workspace_state,
+)
 from psystack.reporting.bundle import build_report_bundle
 from psystack.reporting.types import ReportBundle
 
@@ -202,7 +198,6 @@ class TuiBackendService:
 
     def _extract_and_cache_events(self, workspace: Path) -> dict[str, list]:
         """Extract events from saved episodes and write events.json."""
-        from psystack.models.event import Event
         from psystack.pipeline.event_extraction import extract_events_for_episode
 
         eps_a_path = workspace / "runs" / "a" / "episodes.json"
@@ -349,7 +344,7 @@ class TuiBackendService:
         run_stages(ctx, stages, observer=observer)
 
     def run_isolate_only(self, workspace: Path, observer: StageObserver | None = None) -> None:
-        from psystack.pipeline.stages import IsolateStage, AttributeStage
+        from psystack.pipeline.stages import AttributeStage, IsolateStage
         stages = (IsolateStage(), AttributeStage())
         pipeline_names = tuple(s.name for s in DEFAULT_PIPELINE)
         ctx = RunContext(workspace, pipeline_names=pipeline_names)
@@ -400,7 +395,7 @@ class TuiBackendService:
         repo: Path,
         progress_callback: Callable[[str, int, int], None] | None = None,
         live_sink: Callable[..., None] | None = None,
-        cancel_event: "threading.Event | None" = None,
+        cancel_event: threading.Event | None = None,
     ) -> None:
         """Run A vs B evaluation in lockstep, saving episodes to workspace (D-19, 4C).
 
@@ -418,7 +413,6 @@ class TuiBackendService:
                 recording failure metadata via save_failed_attempt().
         """
         from psystack.pipeline.paired_runner import run_paired_episodes
-        from psystack.pipeline.live_update import LivePairFrame
 
         if not case.track_ref:
             raise ValueError("No track selected — choose a track in the case builder before running")
@@ -525,9 +519,7 @@ class TuiBackendService:
                 display = METRIC_DISPLAY_NAMES.get(m.metric_id, m.metric_id.replace("_", " "))
                 if m.higher_is_better and m.delta_badness > 0:
                     phrase = f"lower {display}"
-                elif not m.higher_is_better and m.delta_badness > 0:
-                    phrase = f"higher {display}"
-                elif m.higher_is_better and m.delta_badness < 0:
+                elif not m.higher_is_better and m.delta_badness > 0 or m.higher_is_better and m.delta_badness < 0:
                     phrase = f"higher {display}"
                 else:
                     phrase = f"lower {display}"

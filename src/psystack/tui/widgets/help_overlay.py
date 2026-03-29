@@ -6,7 +6,6 @@ from textual.app import ComposeResult
 from textual.containers import Vertical
 from textual.widgets import Static
 
-
 # (key, description) pairs — grouped
 _COMMANDS: list[tuple[str, str]] = [
     ("r", "Run evaluation"),

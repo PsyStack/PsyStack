@@ -68,7 +68,9 @@ class TestStepCallbackInRunEpisodes:
     def test_callback_receives_correct_keys(self):
         """Mock env/planner and verify callback dict shape."""
         from unittest.mock import MagicMock
+
         import numpy as np
+
         from psystack.pipeline.episodes import run_episodes
 
         # Mock env
@@ -107,7 +109,9 @@ class TestStepCallbackInRunEpisodes:
     def test_callback_none_no_error(self):
         """run_episodes with step_callback=None still works."""
         from unittest.mock import MagicMock
+
         import numpy as np
+
         from psystack.pipeline.episodes import run_episodes
 
         env = MagicMock()

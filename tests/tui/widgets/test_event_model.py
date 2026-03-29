@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import pytest
 
-from psystack.models.event import Event
 from tests.tui.widgets.conftest import make_events
 
 

@@ -6,7 +6,6 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 
-
 # ── Display name mapping ─────────────────────────────────────────────────────
 
 METRIC_DISPLAY_NAMES: dict[str, str] = {

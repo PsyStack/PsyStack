@@ -5,7 +5,8 @@ from __future__ import annotations
 import math
 
 import pytest
-from hypothesis import given, settings, strategies as st
+from hypothesis import given, settings
+from hypothesis import strategies as st
 
 from psystack.pipeline.compare.stats import adjust_pvalues, bootstrap_ci
 from psystack.pipeline.compare_module import _compute_metric
@@ -62,6 +63,6 @@ def test_bootstrap_ci_lo_le_hi(values: list[float]) -> None:
 def test_adjust_pvalues_invariants(pvals: list[float]) -> None:
     adjusted = adjust_pvalues(pvals)
     assert len(adjusted) == len(pvals), "output length must match input length"
-    for raw, adj in zip(pvals, adjusted):
+    for raw, adj in zip(pvals, adjusted, strict=False):
         assert 0.0 <= adj <= 1.0, f"adjusted p-value {adj} out of [0,1]"
         assert adj >= raw - 1e-12, f"adjusted {adj} < raw {raw}"

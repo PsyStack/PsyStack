@@ -26,7 +26,7 @@ class TestBootstrapCI:
         lo, hi = bootstrap_ci(baseline, candidate)
         assert lo <= hi, f"CI bounds inverted: lo={lo} > hi={hi}"
         assert lo <= 0, f"CI low bound should be <= 0 for no shift, got {lo}"
-        assert 0 <= hi, f"CI high bound should be >= 0 for no shift, got {hi}"
+        assert hi >= 0, f"CI high bound should be >= 0 for no shift, got {hi}"
 
 
 class TestPairedPvalue:

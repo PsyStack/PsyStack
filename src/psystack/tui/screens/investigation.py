@@ -25,7 +25,6 @@ from psystack.tui.widgets.progress_summary import ProgressSummary
 from psystack.tui.widgets.step_inspector import StepInspector
 from psystack.tui.widgets.transport_bar import TransportBar
 
-
 # Pre-compute CSS class names for all screen modes
 _MODE_CLASSES = tuple(f"state-{m.value.replace('_', '-')}" for m in ScreenMode)
 
@@ -120,7 +119,7 @@ class InvestigationScreen(Screen):
         max_step: int = 0,
         metric_ids: list[str] | None = None,
         all_metrics_data: dict[str, tuple[list[float], list[float], list[float]]] | None = None,
-        outcomes: "OutcomeSummary | None" = None,
+        outcomes: OutcomeSummary | None = None,
         episode_idx: int = 0,
         episode_count: int = 0,
         stale: bool = False,
