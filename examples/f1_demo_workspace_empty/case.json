@@ -1,0 +1,30 @@
+{
+  "id": "empty-case",
+  "schema_version": 1,
+  "project_id": "",
+  "track_ref": "dummy_track",
+  "episode_count": 2,
+  "eval_seeds": null,
+  "alignment_method": "progress",
+  "shared_env_overrides": {},
+  "run_a": {
+    "id": "baseline",
+    "world_model_ref": "dummy.pth",
+    "planner_ref": "",
+    "seed": 42,
+    "horizon": 5,
+    "planner_config": {},
+    "env_config": {}
+  },
+  "run_b": {
+    "id": "candidate",
+    "world_model_ref": "dummy.pth",
+    "planner_ref": "",
+    "seed": 42,
+    "horizon": 5,
+    "planner_config": {},
+    "env_config": {}
+  },
+  "events": [],
+  "explanations": []
+}

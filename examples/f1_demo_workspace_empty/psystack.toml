@@ -1,0 +1,3 @@
+[adapter]
+type = "f1"
+repo = "/path/to/f1tenth_gym"

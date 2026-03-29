@@ -1,0 +1,50 @@
+{
+  "baseline_run_dir": "dummy.pth",
+  "candidate_run_dir": "dummy.pth",
+  "metrics": [
+    {
+      "metric_id": "final_track_progress",
+      "baseline_value": 0.675,
+      "candidate_value": 0.65,
+      "delta": -0.025,
+      "delta_badness": 0.037,
+      "higher_is_better": true,
+      "baseline_per_episode": [
+        0.95,
+        0.4
+      ],
+      "candidate_per_episode": [
+        1.0,
+        0.3
+      ],
+      "ci_low": null,
+      "ci_high": null,
+      "p_value": null,
+      "p_value_adj": null,
+      "significant": true,
+      "status": "regression"
+    },
+    {
+      "metric_id": "total_reward",
+      "baseline_value": 3.0,
+      "candidate_value": 3.4,
+      "delta": 0.4,
+      "delta_badness": -0.133,
+      "higher_is_better": true,
+      "baseline_per_episode": [
+        4.5,
+        1.5
+      ],
+      "candidate_per_episode": [
+        5.7,
+        1.1
+      ],
+      "ci_low": null,
+      "ci_high": null,
+      "p_value": null,
+      "p_value_adj": null,
+      "significant": false,
+      "status": "improvement"
+    }
+  ]
+}

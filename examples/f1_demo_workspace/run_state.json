@@ -1,0 +1,13 @@
+{
+  "stages": {
+    "compare": {
+      "name": "compare",
+      "status": "completed",
+      "result": null,
+      "error": null,
+      "started_at": null,
+      "finished_at": null,
+      "reused": false
+    }
+  }
+}

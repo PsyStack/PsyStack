@@ -1,0 +1,100 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "psystack"
+version = "0.1.0"
+description = "Regression investigation harness for ML pipelines"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [{name = "Danny Nguyen"}]
+readme = "README.md"
+keywords = ["regression", "investigation", "ml", "machine-learning", "debugging", "pipeline"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+
+dependencies = [
+    "typer>=0.9.0,<1",
+    "pydantic>=2.0.0,<3",
+    "pydantic-settings>=2.0.0",
+    "jinja2>=3.1.0",
+    "tomli-w>=1.0.0",
+    "InquirerPy>=0.3.4",
+    "rich>=13.0.0",
+    "torch>=2.0.0,<3",
+    "numpy>=1.24.0,<3",
+    "scipy>=1.11.0",
+    "statsmodels>=0.14.0",
+    "textual>=0.80.0",
+    "tomli>=2.0.0; python_version < '3.11'",
+]
+
+[project.urls]
+Homepage = "https://github.com/PsyStack/PsyStack"
+Issues = "https://github.com/PsyStack/PsyStack/issues"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-textual-snapshot",
+    "hypothesis",
+    "pytest-asyncio>=0.23.0",
+    "ruff>=0.4.0",
+    "mypy>=1.8.0",
+]
+
+[project.entry-points."psystack.adapters"]
+f1 = "psystack.adapters.f1.factory:F1AdapterFactory"
+
+[project.scripts]
+psystack = "psystack.cli.app:app"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+psystack = ["tui/styles/*.tcss", "reporting/templates/*.j2"]
+
+[tool.ruff]
+target-version = "py310"
+line-length = 120
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+ignore = ["B008", "B904"]
+
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = true
+warn_unused_configs = true
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["psystack.models.*", "psystack.reporting.*", "psystack.pipeline.context", "psystack.pipeline.stages.*", "psystack.core.contracts"]
+disallow_untyped_defs = true
+
+[[tool.mypy.overrides]]
+module = ["psystack.pipeline.compare.*", "psystack.pipeline.isolation.attribution"]
+disallow_untyped_defs = false
+warn_return_any = false
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+    "unit: fast isolated tests",
+    "integration: tests spanning multiple components",
+    "smoke: CLI entry-point smoke tests",
+    "property: hypothesis property-based tests",
+    "snapshot: textual snapshot tests",
+    "tui: tests requiring Textual runtime",
+    "f1: tests that require the real F1 adapter/repo",
+    "framework: hermetic framework tests",
+]
+asyncio_default_fixture_loop_scope = "function"

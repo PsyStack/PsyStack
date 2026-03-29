@@ -1,0 +1,224 @@
+/* ── Design tokens (reference theme vars for easy tuning) ── */
+$border-color-nofocus: $panel;
+$border-title-color-nofocus: $panel;
+$border-color-focus: $primary;
+$border-title-color-focus: $primary;
+
+Screen { layout: vertical; }
+
+/* ── Global button styling (Harlequin pattern) ── */
+
+Button {
+    border: none;
+    text-style: bold;
+    min-height: 1;
+    height: 1;
+    padding: 0 2;
+    background: $panel;
+    color: $text;
+}
+Button:hover {
+    background: $secondary;
+    color: $background;
+}
+Button:focus {
+    text-style: bold reverse;
+}
+Button.-primary {
+    background: $primary;
+    color: $background;
+}
+Button.-primary:hover {
+    background: $secondary;
+    color: $background;
+}
+Button:disabled {
+    opacity: 0.4;
+    text-style: italic;
+}
+
+/* ── Global round borders for all paneled widgets ── */
+
+StepInspector,
+ProgressSummary,
+EventNavigator,
+LiveRunMonitor,
+MetricDetailPane,
+IsolationCaseDetailPane,
+ArtifactPreviewPane,
+.pane {
+    border: round $border-color-nofocus;
+    border-title-color: $border-title-color-nofocus;
+    border-title-style: bold;
+    background: $background;
+}
+
+/* ── Focus highlighting (two-state borders) ── */
+
+StepInspector:focus-within,
+ProgressSummary:focus-within,
+EventNavigator:focus-within,
+LiveRunMonitor:focus-within {
+    border: round $border-color-focus;
+    border-title-color: $border-title-color-focus;
+}
+
+/* ── Non-responsive state (Harlequin disabled pattern) ── */
+
+.non-responsive {
+    border: round $panel-lighten-1;
+}
+.non-responsive Button,
+.non-responsive Static {
+    text-style: italic;
+}
+
+/* ── DataTable polish ── */
+
+DataTable > .datatable--cursor {
+    background: $secondary-muted;
+    color: auto;
+}
+DataTable:focus > .datatable--cursor {
+    background: $secondary;
+}
+DataTable > .datatable--hover {
+    background: $boost;
+}
+DataTable > .datatable--header {
+    text-style: bold;
+    color: $primary;
+    background: $background;
+}
+DataTable > .datatable--header-hover {
+    text-style: bold;
+    color: $primary;
+    background: $background;
+}
+
+/* ── Scrollbar theming ── */
+
+* {
+    scrollbar-background: $background-lighten-1;
+    scrollbar-color: $panel;
+    scrollbar-color-hover: $primary;
+    scrollbar-color-active: $secondary;
+}
+
+/* ── Toast left-accent stripe (Harlequin pattern) ── */
+
+Toast {
+    width: auto;
+    background: $background;
+    border-left: wide $primary;
+    border-right: none;
+    padding: 0 1;
+    margin: 0 0 1 0;
+}
+Toast .toast--title {
+    color: $primary;
+}
+Toast.-information { border-left: wide $primary; }
+Toast.-warning { border-left: wide $secondary; }
+Toast.-error { border-left: wide $error; }
+
+/* ── Footer theming (Harlequin pattern) ── */
+
+Footer {
+    background: $background;
+    color: $text;
+}
+FooterKey {
+    background: $background;
+    color: $text;
+}
+FooterKey .footer-key--key {
+    color: $secondary;
+    background: $background;
+    text-style: bold;
+}
+FooterKey .footer-key--description {
+    color: $primary;
+    padding: 0 1 0 0;
+}
+FooterKey:hover {
+    background: $boost;
+}
+FooterKey:hover .footer-key--key {
+    background: $boost;
+}
+
+/* ── Status classes ── */
+
+.status-completed { background: $success; }
+.status-running { background: $warning; }
+.status-failed { background: $error; }
+.status-skipped { color: $text-muted; }
+
+.section-title {
+    padding: 1 0 0 0;
+    text-style: bold;
+    color: $accent;
+}
+
+/* ── Screen layouts ── */
+
+RunBuilderScreen,
+InvestigationScreen,
+AttributionWorkspaceScreen {
+    layout: vertical;
+}
+
+/* ── CaseBar (sticky header) ── */
+
+CaseBar { dock: top; }
+
+/* ── Transport bar ── */
+
+TransportBar { dock: bottom; }
+
+/* ── Event navigator ── */
+
+EventNavigator { scrollbar-size: 1 1; }
+
+/* ── Run config panel ── */
+
+RunConfigPanel .rcp-field-label {
+    color: $text-muted;
+    padding: 0;
+    margin: 0;
+}
+
+/* ── Config diff drawer sections ── */
+
+.cd-section {
+    text-style: bold;
+    padding: 1 0 0 0;
+    color: $accent;
+}
+
+/* ── Provenance drawer sections ── */
+
+.pv-section {
+    text-style: bold;
+    padding: 1 0 0 0;
+    color: $accent;
+}
+
+/* ── VerdictStrip ── */
+
+VerdictStrip {
+    height: 3;
+    padding: 0 2;
+    background: $surface;
+    color: $text;
+}
+
+VerdictStrip.vs-awaiting { color: $text-muted; }
+VerdictStrip.vs-running { color: $warning; }
+VerdictStrip.vs-pending { color: $text-muted; }
+VerdictStrip.vs-verdict-regression { color: $text; }
+VerdictStrip.vs-verdict-improvement { color: $text; }
+VerdictStrip.vs-verdict-nochange { color: $text-muted; }
+VerdictStrip.vs-verdict-mixed { color: $text; }
+VerdictStrip.vs-analysis-failed { color: $warning; }

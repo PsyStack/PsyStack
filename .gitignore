@@ -1,0 +1,29 @@
+__pycache__/
+*.pyc
+*.egg-info/
+.DS_Store
+dist/
+build/
+*.egg
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+
+# Environment
+.env
+.env.*
+
+# Test artifacts
+.hypothesis/
+
+# Local config
+.claude/
+.planning/
+CLAUDE.md
+
+# Output
+psystack_out/
+
+# IDE
+.vscode/
+.idea/

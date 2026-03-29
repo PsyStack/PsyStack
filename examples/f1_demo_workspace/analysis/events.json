@@ -1,0 +1,51 @@
+{
+  "events_by_episode": {
+    "a": {
+      "ep_0000": [
+        {
+          "id": "evt-div-ep0-s1",
+          "type": "divergence_window",
+          "step": 1,
+          "time_s": null,
+          "severity": "warning",
+          "score": 0.35,
+          "persistence_k": 2,
+          "active_signals": [],
+          "local_window": null,
+          "evidence_refs": [],
+          "metadata": {}
+        }
+      ],
+      "ep_0001": [
+        {
+          "id": "evt-off-ep1-s2",
+          "type": "off_track_terminal",
+          "step": 2,
+          "time_s": null,
+          "severity": "critical",
+          "score": 0.9,
+          "persistence_k": 1,
+          "active_signals": [],
+          "local_window": null,
+          "evidence_refs": [],
+          "metadata": {}
+        }
+      ]
+    }
+  },
+  "top_run_events": [
+    {
+      "id": "evt-div-ep0-s1",
+      "type": "divergence_window",
+      "step": 1,
+      "time_s": null,
+      "severity": "warning",
+      "score": 0.35,
+      "persistence_k": 2,
+      "active_signals": [],
+      "local_window": null,
+      "evidence_refs": [],
+      "metadata": {}
+    }
+  ]
+}
