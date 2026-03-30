@@ -169,20 +169,7 @@ class TheseanApp(App):
         self._shutting_down = True
         self._eval_cancel.set()
         self._stop_live_monitoring()
-        worker = self._eval_worker
-        if worker is not None and worker.is_running:
-            import asyncio
-
-            async def _wait_and_exit() -> None:
-                try:
-                    await asyncio.wait_for(worker.wait(), timeout=3.0)
-                except (asyncio.TimeoutError, Exception):
-                    pass
-                self.exit()
-
-            self.run_worker(_wait_and_exit, thread=False)  # type: ignore[arg-type]
-        else:
-            self.exit()
+        self.exit()
 
     def action_pop_screen(self) -> None:  # type: ignore[override]
         """Guard against popping back to the bare base screen."""
@@ -798,6 +785,8 @@ class TheseanApp(App):
 
     def _poll_live_queue(self) -> None:
         """Drain queue, log every step, update dashboard with latest only."""
+        if self._shutting_down:
+            return
         q = self._live_queue
         if q is None:
             return
@@ -817,6 +806,8 @@ class TheseanApp(App):
 
     def _push_live_update(self, raw: object, *, step_only: bool = False) -> None:
         """Transform LivePairFrame via adapter, forward to active screen."""
+        if self._shutting_down:
+            return
 
         if not isinstance(raw, LivePairFrame):
             return
