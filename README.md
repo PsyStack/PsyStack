@@ -1,8 +1,8 @@
- # TheSean
+ # Thesean
 
  A regression investigation harness for ML pipelines, latent action systems, and world models.
 
- TheSean runs paired A/B evaluations across ML/world model experiments, detects regressions, and provides an interactive investigation workbench for debugging episode-level divergences.
+ Thesean runs paired A/B evaluations across ML/world model experiments, detects regressions, and provides an interactive investigation workbench for debugging episode-level divergences.
 
  ## What it does
 
@@ -21,7 +21,7 @@
 pip install thesean
 ```
 
- ### Prerequisites: TheSean requires an ML repo with a compatible adapter.
+ ### Prerequisites: Thesean requires an ML repo with a compatible adapter.
 
  The only available adapter is for [f1worldmodel](https://github.com/justinsiek/f1worldmodel).
 
